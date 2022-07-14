@@ -1,16 +1,26 @@
 package com.educandoweb.workshop.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serial;
 import java.io.Serializable;
 
 import static java.util.Objects.hash;
+import static javax.persistence.GenerationType.IDENTITY;
 
+@Entity
+@Table(name = "users")
 public class User implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private long id;
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
+
     private String name;
     private String email;
     private String phone;
