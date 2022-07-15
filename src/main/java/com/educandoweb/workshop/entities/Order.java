@@ -14,6 +14,7 @@ import java.util.Set;
 import static com.educandoweb.workshop.entities.enums.OrderStatus.valueOf;
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 import static java.util.Objects.hash;
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -38,6 +39,9 @@ public class Order implements Serializable {
 
     @OneToMany(mappedBy = "id.order")
     private Set<OrderItem> items = new HashSet<>();
+
+    @OneToOne(mappedBy = "order", cascade = ALL)
+    private Payment payment;
 
     public Order() {
     }
@@ -85,6 +89,14 @@ public class Order implements Serializable {
 
     public Set<OrderItem> getItems() {
         return items;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     @Override
