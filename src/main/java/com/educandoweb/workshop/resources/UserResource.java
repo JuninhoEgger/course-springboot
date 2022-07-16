@@ -5,14 +5,14 @@ import com.educandoweb.workshop.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
+import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
 @Slf4j
 @RestController
@@ -32,6 +32,14 @@ public class UserResource {
     public ResponseEntity<User> findById(@PathVariable Long id) {
         log.info("Buscando o usuário de id {}", id);
         return ok().body(service.findById(id));
+    }
+
+    @PostMapping("/insert")
+    public ResponseEntity<User> insert(@RequestBody User user) {
+        log.info("Inserindo o user {}", user.getName());
+        user = service.insert(user);
+        URI uri = fromCurrentRequestUri().path("/{id}").buildAndExpand(user.getId()).toUri();
+        return created(uri).body(user);
     }
 
 }
