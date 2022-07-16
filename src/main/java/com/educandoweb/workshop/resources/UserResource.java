@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
-import static org.springframework.http.ResponseEntity.created;
-import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.*;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
 @Slf4j
@@ -40,6 +39,13 @@ public class UserResource {
         user = service.insert(user);
         URI uri = fromCurrentRequestUri().path("/{id}").buildAndExpand(user.getId()).toUri();
         return created(uri).body(user);
+    }
+
+    @DeleteMapping("/delete-by-id/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        log.info("Deletando o usuário com o id {}", id);
+        service.deleteById(id);
+        return noContent().build();
     }
 
 }
