@@ -1,35 +1,36 @@
 package com.educandoweb.workshop.resources;
 
 import com.educandoweb.workshop.entities.Order;
+import com.educandoweb.workshop.resources.apis.OrderApi;
 import com.educandoweb.workshop.services.OrderService;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static org.springframework.http.ResponseEntity.ok;
 
 @Slf4j
-@RestController
-@RequestMapping(value = "/orders")
-public class OrderResource {
+@Controller
+@Api(tags = {"Order"})
+public class OrderResource implements OrderApi {
 
     @Autowired
     private OrderService service;
 
-    @GetMapping("/find-all")
-    public ResponseEntity<List<Order>> findAll() {
+    @Override
+    public ResponseEntity<List<Order>> findAll(HttpServletRequest request) {
         log.info("Buscando todos os pedidos na tabela orders");
         return ok().body(service.findAll());
     }
 
-    @GetMapping("/find-by-id/{id}")
-    public ResponseEntity<Order> findById(@PathVariable Long id) {
+    @Override
+    public ResponseEntity<Order> findById(@PathVariable Long id, HttpServletRequest request) {
         log.info("Buscando o pedido de id {}", id);
         return ok().body(service.findById(id));
     }

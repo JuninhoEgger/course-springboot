@@ -2,6 +2,7 @@ package com.educandoweb.workshop.services;
 
 import com.educandoweb.workshop.entities.Order;
 import com.educandoweb.workshop.repositories.OrderRepository;
+import com.educandoweb.workshop.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class OrderService {
 
     public Order findById(Long id) {
         Optional<Order> order = repository.findById(id);
-        return order.get();
+        return order.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
 }
